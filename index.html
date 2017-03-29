@@ -3,18 +3,19 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
 
-<div class="container spacerino">
+<div class="container spacerino custom-font">
   <div class="row">
     
     <div class="col-md-6">
 
-      <!--<h1> SMoOnion <i class="fa fa-camera-retro" aria-hidden="true"></i></h1>-->
-
       <h1> SMoOnion <img src="sonion_icon.png" height="42" width="42"> </h1>
-
-      <p> Stop-Motion software for DSLR cameras with onion skin features.</p>
-      <p> Currently only Nikon D90 supported.</p>
+      
+      <div class="bigger">
+        <p> Stop-Motion software for DSLR cameras with onion skin features.</p>
+        <p> Currently only Nikon D90 supported.</p>
+      </div>
     
     </div>
     
@@ -23,7 +24,7 @@
      
       <h2>Features roadmap:</h2>
        
-      <div class="list-group">
+      <div class="list-group bigger">
         <a href="#" class="list-group-item">Single frame snapshot <i class="pull-right fa fa-check-circle" aria-hidden="true"></i> </a>
         <a href="#" class="list-group-item">LiveView with previous frame on onion skin <i class="pull-right fa fa-check-circle" aria-hidden="true"></i> </a>
         <a href="#" class="list-group-item">Battery level warning <i class="pull-right fa fa-refresh" aria-hidden="true"></i> </a>
@@ -40,7 +41,7 @@
 
     <div class="col-md-12">
 
-     <div class="alert alert-info" role="alert"><b>contact:</b> anne.van.zondervan[at]protonmail.com</div>
+     <div class="bigger alert alert-info" role="alert"><b>contact:</b> anne.van.zondervan[at]protonmail.com</div>
     
     </div>
         
@@ -49,6 +50,14 @@
 
 <style>
 
+  .custom-font {
+    font-family: 'Josefin Sans', sans-serif;
+  }
+
+   .bigger {
+    font-size: 20px;
+  }
+  
   .spacerino {
     margin-top: 20px;
   }
@@ -65,6 +74,13 @@
     color: #B03852;
     font-size: 20px;
   }
+
+  * {
+  border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  -webkit-border-radius: 0px !important;
+  }
+
   
 </style>
 
