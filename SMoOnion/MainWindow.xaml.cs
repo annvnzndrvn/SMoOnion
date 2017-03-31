@@ -23,6 +23,7 @@ namespace SMoOnion
         Camera camera;
         System.Timers.Timer timer;
         System.Timers.Timer snapTimeout;
+        private BatteryChecker _batteryCheckTimer;
 
         private byte[] _lastFrameBytes;
 
@@ -35,9 +36,9 @@ namespace SMoOnion
             camera = new Camera();
             timer = new System.Timers.Timer();
             snapTimeout = new System.Timers.Timer();
+            _batteryCheckTimer = new BatteryChecker(camera);
 
             _path = AppDomain.CurrentDomain.BaseDirectory + "/pictures/";
-        
         }
 
         private void Application_Closing(object sender, CancelEventArgs e)
@@ -89,6 +90,8 @@ namespace SMoOnion
                 SetSnapTimeout();
 
                 camera.Snap();
+
+                batteryBar.Value = _batteryCheckTimer.ReturnBatteryLevel();
             }
             else
             {
