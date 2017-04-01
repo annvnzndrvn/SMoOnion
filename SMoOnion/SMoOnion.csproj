@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BatteryChecker.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Session.cs" />
     <Page Include="MainWindow.xaml">

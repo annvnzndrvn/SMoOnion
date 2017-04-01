@@ -21,8 +21,10 @@ namespace SMoOnion
     public partial class MainWindow : Window
     {
         Camera camera;
-        System.Timers.Timer timer;
-        System.Timers.Timer snapTimeout;
+        System.Timers.Timer _timer;
+        System.Timers.Timer _reactivateLiveView;
+
+        private BatteryChecker _batteryChecker;
 
         private byte[] _lastFrameBytes;
 
@@ -33,11 +35,13 @@ namespace SMoOnion
             InitializeComponent();
 
             camera = new Camera();
-            timer = new System.Timers.Timer();
-            snapTimeout = new System.Timers.Timer();
+
+            _timer = new System.Timers.Timer();
+            _reactivateLiveView = new System.Timers.Timer();
+
+            _batteryChecker = new BatteryChecker(camera);
 
             _path = AppDomain.CurrentDomain.BaseDirectory + "/pictures/";
-        
         }
 
         private void Application_Closing(object sender, CancelEventArgs e)
@@ -59,12 +63,9 @@ namespace SMoOnion
 
                     sessionLabel.Content = "working on session: " + camera.Session.Name;
                     sessionLabel.Visibility = Visibility.Visible;
-
-
+                    
                     setSessionButton.Visibility = Visibility.Hidden;
                     sessionNameTextbox.Visibility = Visibility.Hidden;
-
-                    captureButton.IsEnabled = true;
                 }
                 else
                 {
@@ -81,33 +82,39 @@ namespace SMoOnion
 
         private void captureButton_Click(object sender, RoutedEventArgs e)
         {
-            if (camera.cam != null)
+        
+            if (camera.cam != null &&
+                camera.cam.LiveViewEnabled &&
+                camera.Session.Name != "")
             {
                 camera.cam.LiveViewEnabled = false;
-                timer.Enabled = false;
-
-                SetSnapTimeout();
+                _timer.Enabled = false;
 
                 camera.Snap();
+
+                if (!batteryBar.IsVisible)
+                    batteryBar.Visibility = Visibility.Visible;
+
+                if (!batteryLevelLabel.IsVisible)
+                    batteryLevelLabel.Visibility = Visibility.Visible;
+
+                batteryBar.Value = _batteryChecker.ReturnBatteryLevel();
             }
             else
             {
-                MessageBox.Show("Verify that camera is turned on, properly connected through USB cable and at least with 25% remaining battery", "Unable to snap");
+                MessageBox.Show("Verify that camera is turned on, properly connected through USB cable, LiveView is activated and at least 10% remaining battery", "Unable to snap");
             }
             
         }
-
-        private void SetSnapTimeout()
+             
+        public void SetLastFrameOnOnion()
         {
-            snapTimeout.Elapsed += SnapTimeout_Elapsed;
-            snapTimeout.Interval = 1000;
-            snapTimeout.Enabled = true;
-        }
+            StopLiveView();
 
-        private void SnapTimeout_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            SetLiveViewTimer();
-            snapTimeout.Enabled = false;
+            _reactivateLiveView.AutoReset = false;
+            _reactivateLiveView.Elapsed += _reactivateLiveView_Elapsed;
+            _reactivateLiveView.Interval = 1000; // apparently it needs some buffer time to reactivate live view otherwise it won't work
+            _reactivateLiveView.Enabled = true;
 
             _lastFrameBytes = System.IO.File.ReadAllBytes(_path + "/temp/" + "lastframe.jpeg");
 
@@ -117,14 +124,20 @@ namespace SMoOnion
             });
         }
 
+        private void _reactivateLiveView_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            StartLiveView();
+        }
+
         private void SetLiveViewTimer()
         {
             try
             {
                 camera.cam.LiveViewEnabled = true;
-                timer.Elapsed += Timer_Elapsed;
-                timer.Interval = 41;
-                timer.Enabled = true;
+                _timer.Elapsed += Timer_Elapsed;
+                _timer.Interval = 41;
+                _timer.Enabled = true;
+
             }
             catch { }
         }
@@ -164,32 +177,44 @@ namespace SMoOnion
 
         private void startLiveViewButton_Click(object sender, RoutedEventArgs e)
         {
+            StartLiveView();
+        }
+        private void stopLiveViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            StopLiveView();
+        }
+
+        private void StartLiveView()
+        {
             if (camera.cam != null)
             {
                 camera.cam.LiveViewEnabled = false;
                 SetLiveViewTimer();
 
-                liveViewFeedLabel.Content = "LiveView feed: on";
+                Dispatcher.Invoke(() =>
+                {
+                    liveViewFeedLabel.Content = "LiveView feed: on";
 
-                startLiveViewButton.IsEnabled = false;
-                stopLiveViewButton.IsEnabled = true;
+                    startLiveViewButton.IsEnabled = false;
+                    stopLiveViewButton.IsEnabled = true;
+                });
             }
             else
             {
-                MessageBox.Show("Verify that camera is turned on, properly connected through USB cable and at least with 25% remaining battery" , "Unable to find camera");
+                MessageBox.Show("Verify that camera is turned on, properly connected through USB cable and at least 10% remaining battery", "Unable to find camera");
             }
         }
 
-        private void stopLiveViewButton_Click(object sender, RoutedEventArgs e)
+        private void StopLiveView()
         {
-      
             camera.cam.LiveViewEnabled = false;
-            timer.Enabled = false;
+            _timer.Enabled = false;
 
             liveViewFeedLabel.Content = "LiveView feed: off";
 
             startLiveViewButton.IsEnabled = true;
             stopLiveViewButton.IsEnabled = false;
         }
+        
     }
 }
