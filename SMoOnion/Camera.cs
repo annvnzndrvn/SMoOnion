@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Nikon;
 using System.Drawing;
+using System.Windows;
 
 namespace SMoOnion
 {
@@ -23,8 +24,12 @@ namespace SMoOnion
         public NikonDevice cam;
         public NikonManager manager;
 
+        private MainWindow _mainWindow;
+
         public Camera()
         {
+            _mainWindow = (MainWindow)Application.Current.MainWindow;
+
             _path = AppDomain.CurrentDomain.BaseDirectory + "/pictures/";
 
             System.IO.Directory.CreateDirectory(_path + "/temp");
@@ -38,6 +43,7 @@ namespace SMoOnion
         {
             cam = device;
             device.ImageReady += Device_ImageReady;
+            cam.LiveViewEnabled = false;
         }
 
 
@@ -52,6 +58,8 @@ namespace SMoOnion
             System.IO.File.WriteAllBytes(_path + "/temp/lastframe.jpeg", _img);
 
             _session.PictureCount++;
+
+            _mainWindow.SetLastFrameOnOnion();
         }
 
         public void Snap()

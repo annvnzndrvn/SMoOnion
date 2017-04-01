@@ -16,13 +16,13 @@
         <Label x:Name="sessionLabel" Content="working on session:" HorizontalAlignment="Left" Margin="511,11,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="sessionNameTextbox" HorizontalAlignment="Left" Height="23" Margin="593,41,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="setSessionButton" Content="set session" HorizontalAlignment="Left" Margin="513,41,0,0" VerticalAlignment="Top" Width="75" Click="setSessionButton_Click"/>
-        <Button x:Name="captureButton" Content="snap" HorizontalAlignment="Left" Margin="15,327,0,0" VerticalAlignment="Top" Width="75" Click="captureButton_Click" IsEnabled="False"/>
+        <Button x:Name="captureButton" Content="snap" HorizontalAlignment="Left" Margin="15,327,0,0" VerticalAlignment="Top" Width="75" Click="captureButton_Click"/>
         <Image x:Name="liveFeedDisplay" HorizontalAlignment="Left" Height="271" Margin="10,10,0,0" VerticalAlignment="Top" Width="477" Panel.ZIndex="-50" RenderTransformOrigin="0.5,0.5"/>
         <Button x:Name="startLiveViewButton" Content="start" HorizontalAlignment="Left" Margin="95,327,0,0" VerticalAlignment="Top" Width="50" Click="startLiveViewButton_Click"/>
         <Button x:Name="stopLiveViewButton" Content="stop" HorizontalAlignment="Left" Margin="150,327,0,0" VerticalAlignment="Top" Width="50" Click="stopLiveViewButton_Click" IsEnabled="False"/>
         <Label x:Name="liveViewFeedLabel" Content="LiveView feed:" HorizontalAlignment="Left" Margin="95,301,0,0" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="batteryBar" HorizontalAlignment="Left" Height="22" Margin="593,327,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="batteryLevelLabel" Content="Battery level:" HorizontalAlignment="Left" Margin="589,300,0,0" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="batteryBar" HorizontalAlignment="Left" Height="22" Margin="593,327,0,0" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
+        <Label x:Name="batteryLevelLabel" Content="Battery level:" HorizontalAlignment="Left" Margin="589,300,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 
     </Grid>
 </Window>
