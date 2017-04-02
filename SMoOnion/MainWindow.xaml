@@ -12,7 +12,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="lastFrameBox" HorizontalAlignment="Left" Height="271" Margin="10,10,0,0" VerticalAlignment="Top" Width="477" Opacity="0.5" Panel.ZIndex="-25"/>
+        <Image x:Name="lastFrameBox" HorizontalAlignment="Left" Height="271" Margin="10,10,0,0" VerticalAlignment="Top" Width="477" Opacity="0" Panel.ZIndex="-25"/>
         <Label x:Name="sessionLabel" Content="working on session:" HorizontalAlignment="Left" Margin="511,11,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="sessionNameTextbox" HorizontalAlignment="Left" Height="23" Margin="593,41,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="setSessionButton" Content="set session" HorizontalAlignment="Left" Margin="513,41,0,0" VerticalAlignment="Top" Width="75" Click="setSessionButton_Click"/>
@@ -23,6 +23,8 @@
         <Label x:Name="liveViewFeedLabel" Content="LiveView feed:" HorizontalAlignment="Left" Margin="95,301,0,0" VerticalAlignment="Top"/>
         <ProgressBar x:Name="batteryBar" HorizontalAlignment="Left" Height="22" Margin="593,327,0,0" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
         <Label x:Name="batteryLevelLabel" Content="Battery level:" HorizontalAlignment="Left" Margin="589,300,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Slider x:Name="onionSkinSlider" HorizontalAlignment="Left" Margin="214,327,0,0" VerticalAlignment="Top" Width="134" ValueChanged="onionSkinSlider_ValueChanged"/>
+        <Label x:Name="onionSliderLabel" Content="Onion skin opacity: 0%" HorizontalAlignment="Left" Margin="214,300,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

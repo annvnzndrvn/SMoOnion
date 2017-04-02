@@ -43,9 +43,15 @@ namespace SMoOnion
         {
             cam = device;
             device.ImageReady += Device_ImageReady;
+            device.CaptureComplete += Device_CaptureComplete;
+
             cam.LiveViewEnabled = false;
         }
 
+        private void Device_CaptureComplete(NikonDevice sender, int data)
+        {
+            _mainWindow.SetLastFrameOnOnion();
+        }
 
         private void Device_ImageReady(NikonDevice sender, NikonImage image)
         {
@@ -58,8 +64,6 @@ namespace SMoOnion
             System.IO.File.WriteAllBytes(_path + "/temp/lastframe.jpeg", _img);
 
             _session.PictureCount++;
-
-            _mainWindow.SetLastFrameOnOnion();
         }
 
         public void Snap()
