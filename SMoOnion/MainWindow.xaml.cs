@@ -22,7 +22,6 @@ namespace SMoOnion
     {
         Camera camera;
         System.Timers.Timer _timer;
-        System.Timers.Timer _reactivateLiveView;
 
         private BatteryChecker _batteryChecker;
 
@@ -37,7 +36,6 @@ namespace SMoOnion
             camera = new Camera();
 
             _timer = new System.Timers.Timer();
-            _reactivateLiveView = new System.Timers.Timer();
 
             _batteryChecker = new BatteryChecker(camera);
 
@@ -85,10 +83,10 @@ namespace SMoOnion
         
             if (camera.cam != null &&
                 camera.cam.LiveViewEnabled &&
-                camera.Session.Name != "")
+                camera.Session != null)
             {
-                camera.cam.LiveViewEnabled = false;
-                _timer.Enabled = false;
+
+                StopLiveView();
 
                 camera.Snap();
 
@@ -109,12 +107,9 @@ namespace SMoOnion
              
         public void SetLastFrameOnOnion()
         {
-            StopLiveView();
 
-            _reactivateLiveView.AutoReset = false;
-            _reactivateLiveView.Elapsed += _reactivateLiveView_Elapsed;
-            _reactivateLiveView.Interval = 1000; // apparently it needs some buffer time to reactivate live view otherwise it won't work
-            _reactivateLiveView.Enabled = true;
+            StartLiveView();
+
 
             _lastFrameBytes = System.IO.File.ReadAllBytes(_path + "/temp/" + "lastframe.jpeg");
 
@@ -123,12 +118,7 @@ namespace SMoOnion
                 lastFrameBox.Source = LoadImage(_lastFrameBytes);
             });
         }
-
-        private void _reactivateLiveView_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            StartLiveView();
-        }
-
+        
         private void SetLiveViewTimer()
         {
             try
@@ -215,6 +205,14 @@ namespace SMoOnion
             startLiveViewButton.IsEnabled = true;
             stopLiveViewButton.IsEnabled = false;
         }
-        
+
+        private void onionSkinSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            double truncated = Math.Round(onionSkinSlider.Value, 1);
+            
+            onionSliderLabel.Content = "Onion skin opacity: " + (truncated * 10).ToString() + "%";
+
+            lastFrameBox.Opacity = onionSkinSlider.Value / 10;
+        }
     }
 }
