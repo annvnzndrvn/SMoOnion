@@ -44,8 +44,6 @@ namespace SMoOnion
             cam = device;
             device.ImageReady += Device_ImageReady;
             device.CaptureComplete += Device_CaptureComplete;
-
-            cam.LiveViewEnabled = false;
         }
 
         private void Device_CaptureComplete(NikonDevice sender, int data)
@@ -68,7 +66,9 @@ namespace SMoOnion
 
         public void Snap()
         {
-            cam.Capture();
+            if (cam != null)
+                cam.Capture();
         }
+  
     }
 }

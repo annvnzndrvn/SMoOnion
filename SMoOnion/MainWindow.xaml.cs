@@ -80,15 +80,15 @@ namespace SMoOnion
 
         private void captureButton_Click(object sender, RoutedEventArgs e)
         {
-        
+
             if (camera.cam != null &&
                 camera.cam.LiveViewEnabled &&
                 camera.Session != null)
             {
 
-                StopLiveView();
+                StopLiveView(); // problem happens even when commenting out all of this
 
-                camera.Snap();
+                camera.Snap(); // or here
 
                 if (!batteryBar.IsVisible)
                     batteryBar.Visibility = Visibility.Visible;
@@ -102,14 +102,25 @@ namespace SMoOnion
             {
                 MessageBox.Show("Verify that camera is turned on, properly connected through USB cable, LiveView is activated and at least 10% remaining battery", "Unable to snap");
             }
-            
+
         }
-             
+
+        public void RestartCamera()
+        {
+            string currentSession = camera.Session.Name;
+            int currentCount = camera.Session.PictureCount;
+
+            camera = new Camera();
+            camera.Session = new Session();
+            camera.Session.Name = currentSession;
+            camera.Session.PictureCount = currentCount;
+        }
+
         public void SetLastFrameOnOnion()
         {
+            // RestartCamera();
 
             StartLiveView();
-
 
             _lastFrameBytes = System.IO.File.ReadAllBytes(_path + "/temp/" + "lastframe.jpeg");
 
@@ -117,10 +128,12 @@ namespace SMoOnion
             {
                 lastFrameBox.Source = LoadImage(_lastFrameBytes);
             });
+
         }
         
         private void SetLiveViewTimer()
         {
+
             try
             {
                 camera.cam.LiveViewEnabled = true;
@@ -176,6 +189,12 @@ namespace SMoOnion
 
         private void StartLiveView()
         {
+            if (camera.Session == null)
+            {
+                MessageBox.Show("Set a session name first", "Error");
+                return;
+            }
+
             if (camera.cam != null)
             {
                 camera.cam.LiveViewEnabled = false;
@@ -198,7 +217,6 @@ namespace SMoOnion
         private void StopLiveView()
         {
             camera.cam.LiveViewEnabled = false;
-            _timer.Enabled = false;
 
             liveViewFeedLabel.Content = "LiveView feed: off";
 
